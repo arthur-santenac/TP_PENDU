@@ -21,7 +21,8 @@ public class RetourAccueil implements EventHandler<ActionEvent> {
      * @param vuePendu vue du jeu
      */
     public RetourAccueil(MotMystere modelePendu, Pendu vuePendu) {
-        // A implémenter
+        this.modelePendu = modelePendu;
+        this.vuePendu = vuePendu;
     }
 
 

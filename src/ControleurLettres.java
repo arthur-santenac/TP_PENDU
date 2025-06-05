@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -22,7 +24,8 @@ public class ControleurLettres implements EventHandler<ActionEvent> {
      * @param vuePendu vue du jeu
      */
     ControleurLettres(MotMystere modelePendu, Pendu vuePendu){
-        // A implémenter
+        this.modelePendu = modelePendu;
+        this.vuePendu = vuePendu;
     }
 
     /**
@@ -32,6 +35,37 @@ public class ControleurLettres implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        // A implémenter
+
+        Button bouton = (Button) actionEvent.getSource();
+        String lettre = bouton.getText();
+        bouton.setDisable(true);
+
+        int bonneLettre = vuePendu.getModele().essaiLettre(lettre.charAt(0));
+
+        vuePendu.getMotCrypte().setText(vuePendu.getModele().getMotCrypte());
+
+        if (bonneLettre == 0) {
+
+            if (vuePendu.getModele().getNbEssais() >= vuePendu.getModele().getNbErreursMax()) {
+                vuePendu.getDessin().setImage(vuePendu.getImage(vuePendu.getModele().getNbErreursMax()));
+                vuePendu.getProgressBar().setProgress(1.0);
+                vuePendu.getChrono().stop();
+                vuePendu.getClavier().desactiveTouches();
+                vuePendu.popUpMessagePerdu().showAndWait();
+                return;
+            }
+
+            int nbErreurs = vuePendu.getModele().getNbEssais();
+            ImageView pendu = vuePendu.getDessin();
+            pendu.setImage(vuePendu.getImage(nbErreurs));
+
+            double progression = (double) nbErreurs / vuePendu.getModele().getNbErreursMax();
+            vuePendu.getProgressBar().setProgress(progression);
+        }
+
+        if (vuePendu.getModele().gagne()) {
+            vuePendu.getChrono().stop();
+            vuePendu.popUpMessageGagne().showAndWait();
+        }
     }
 }
