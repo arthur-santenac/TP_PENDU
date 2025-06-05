@@ -2,7 +2,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
-
+import javafx.stage.Stage;
 /**
  * Contrôleur à activer lorsque l'on clique sur le bouton rejouer ou Lancer une partie
  */
@@ -16,13 +16,16 @@ public class ControleurLancerPartie implements EventHandler<ActionEvent> {
      **/
     private Pendu vuePendu;
 
+    private Stage stage;
+
     /**
      * @param modelePendu modèle du jeu
      * @param p vue du jeu
      */
-    public ControleurLancerPartie(MotMystere modelePendu, Pendu vuePendu) {
+    public ControleurLancerPartie(MotMystere modelePendu, Pendu vuePendu, Stage stage) {
         this.modelePendu = modelePendu;
         this.vuePendu = vuePendu;
+        this.stage = stage;
     }
 
     /**
@@ -31,15 +34,15 @@ public class ControleurLancerPartie implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        System.out.println("Lancement partie");
+       
     
         Optional<ButtonType> reponse = this.vuePendu.popUpPartieEnCours().showAndWait(); // on lance la fenêtre popup et on attends la réponse
         // si la réponse est oui
         if (reponse.isPresent() && reponse.get().equals(ButtonType.YES)){
-            System.out.println("Ok !");
+            vuePendu.lancePartie(stage);
         }
         else{
-            System.out.println("D'ac !");
+            
         }
     }
 }

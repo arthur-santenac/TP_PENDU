@@ -163,7 +163,7 @@ public class Pendu extends Application {
 
 
         Button nouveauMotBtn = new Button("Nouveau mot");
-        nouveauMotBtn.setOnAction(e -> lancePartie(this.stage));
+        nouveauMotBtn.setOnAction(new ControleurLancerPartie(modelePendu, this, this.stage));
 
         VBox panneauDroite = new VBox(20, leNiveau, leChrono(), nouveauMotBtn);
         panneauDroite.setAlignment(Pos.TOP_CENTER);
